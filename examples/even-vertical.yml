@@ -1,0 +1,11 @@
+windows:
+  - name: even-vertical
+    root: ~/code/my-project
+    layout: even-vertical
+    panes:
+      - commands:
+          - echo "Top"
+      - commands:
+          - echo "Middle"
+      - commands:
+          - echo "Bottom"

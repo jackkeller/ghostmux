@@ -1,0 +1,11 @@
+windows:
+  - name: advanced-dev
+    root: ~/code/advanced-project
+    layout: even-horizontal
+    panes:
+      - commands:
+          - npm run dev
+      - commands:
+          - npm run test
+      - commands:
+          - echo "Ready to advanced code!"

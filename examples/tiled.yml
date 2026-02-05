@@ -1,0 +1,11 @@
+windows:
+  - name: tiled
+    root: ~/code/my-project
+    layout: tiled
+    panes:
+      - commands:
+          - echo "Top"
+      - commands:
+          - echo "Bottom Left"
+      - commands:
+          - echo "Bottom Right"

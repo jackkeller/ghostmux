@@ -1,0 +1,13 @@
+windows:
+  - name: grid
+    root: ~/code/my-project
+    layout: tiled
+    panes:
+      - commands:
+          - echo "Top Left"
+      - commands:
+          - echo "Top Right"
+      - commands:
+          - echo "Bottom Left"
+      - commands:
+          - echo "Bottom Right"

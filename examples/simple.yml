@@ -1,0 +1,8 @@
+windows:
+  - name: simple-dev
+    root: ~/code/simple-project
+    layout: alternating
+    panes:
+      - git status
+      - ls -la
+      - echo "Ready to code!"

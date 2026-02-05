@@ -1,0 +1,9 @@
+windows:
+  - name: two-column
+    root: ~/code/my-project
+    layout: even-horizontal
+    panes:
+      - commands:
+          - echo "Left"
+      - commands:
+          - echo "Right"

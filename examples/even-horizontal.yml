@@ -1,0 +1,11 @@
+windows:
+  - name: even-horizontal
+    root: ~/code/my-project
+    layout: even-horizontal
+    panes:
+      - commands:
+          - echo "Left"
+      - commands:
+          - echo "Center"
+      - commands:
+          - echo "Right"

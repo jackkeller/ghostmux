@@ -1,0 +1,10 @@
+windows:
+  - name: alternating
+    root: ~/code/my-project
+    panes:
+      - commands:
+          - echo "Left"
+      - commands:
+          - echo "Top Right"
+      - commands:
+          - echo "Bottom Right"
