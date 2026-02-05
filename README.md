@@ -109,8 +109,9 @@ See `examples/` directory for full sample configs.
 
 ## Requirements
 
+- [Go](https://go.dev) 1.21+
 - macOS (uses AppleScript)
-- Ghostty terminal
+- [Ghostty](https://ghostty.org) terminal
 
 ## License
 
