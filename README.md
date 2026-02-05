@@ -1,6 +1,6 @@
 # ghostmux
 
-iTerm2's itermocil for Ghostty - Launch complex terminal layouts with one command.
+iTerm2's [itermocil](https://github.com/TomAnthony/itermocil) for [Ghostty](https://ghostty.org) - Launch complex terminal layouts with one command.
 
 ## Installation
 ```bash
@@ -32,17 +32,17 @@ windows:
 YAML
 
 # Launch it
-ghostmux --name dev
+ghostmux dev
 ```
 
 ## Usage
 ```bash
-ghostmux --name my-project      # Launch from config name
+ghostmux dev                    # Launch from config name
 ghostmux --config /path/to.yml  # Launch from config path
 ghostmux                        # Launch from .ghostmux.yml in current dir
 ghostmux --list                 # List available configs
-ghostmux --dry-run --name test  # Validate config
-ghostmux --debug --name test    # Debug mode
+ghostmux --dry-run dev          # Validate config
+ghostmux --debug dev            # Debug mode
 ```
 
 ## Layouts

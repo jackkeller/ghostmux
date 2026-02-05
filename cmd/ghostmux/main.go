@@ -35,6 +35,11 @@ func main() {
 		return
 	}
 
+	// Support positional argument: ghostmux <name>
+	if *configName == "" && *configPath == "" && flag.NArg() > 0 {
+		*configName = flag.Arg(0)
+	}
+
 	// Determine config path
 	cfgPath := determineConfigPath(*configPath, *configName, configsDir)
 
@@ -116,5 +121,5 @@ func listAvailableConfigs(dir string) {
 		name = name[:len(name)-4]
 		fmt.Printf("  • %s\n", name)
 	}
-	fmt.Printf("\nLaunch with: ghostmux --name <config-name>\n")
+	fmt.Printf("\nLaunch with: ghostmux <config-name>\n")
 }
