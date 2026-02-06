@@ -10,7 +10,7 @@ import (
 	"github.com/jackkeller/ghostmux/internal/driver/ghostty"
 )
 
-const version = "0.1.0"
+var version = "dev"
 
 func main() {
 	var (
@@ -24,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("ghostmux v%s\n", version)
+		fmt.Printf("ghostmux %s\n", version)
 		os.Exit(0)
 	}
 
