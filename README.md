@@ -2,6 +2,8 @@
 
 iTerm2's [itermocil](https://github.com/TomAnthony/itermocil) for [Ghostty](https://ghostty.org) - Launch complex terminal layouts with one command.
 
+> **macOS only** — ghostmux uses AppleScript to control Ghostty and is not compatible with Linux or Windows.
+
 ## Installation
 ```bash
 go install github.com/jackkeller/ghostmux/cmd/ghostmux@latest
