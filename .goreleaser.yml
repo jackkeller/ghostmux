@@ -1,0 +1,20 @@
+version: 2
+
+builds:
+  - main: ./cmd/ghostmux
+    binary: ghostmux
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+release:
+  github:
+    owner: jackkeller
+    name: ghostmux
+
+changelog:
+  sort: asc
