@@ -106,16 +106,6 @@ func (d *AppleScriptDriver) gotoNextSplit() error {
 	return d.sendKeyCode(30, []string{"command down"})
 }
 
-// Directional split navigation — default keybindings are Cmd+Alt+Arrow.
-// Arrow key codes: left=123, right=124, down=125, up=126.
-func (d *AppleScriptDriver) gotoSplitLeft() error {
-	return d.sendKeyCode(123, []string{"command down", "option down"})
-}
-
-func (d *AppleScriptDriver) gotoSplitRight() error {
-	return d.sendKeyCode(124, []string{"command down", "option down"})
-}
-
 // equalize_splits — default keybinding is Cmd+Ctrl+=
 func (d *AppleScriptDriver) equalizeSplits() error {
 	return d.sendKeystroke("=", []string{"command down", "control down"})
