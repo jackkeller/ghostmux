@@ -1,0 +1,21 @@
+# Harmless 2x2 tiled-grid smoke test — emulates a 4-pane tiled layout
+# (like compass.yml) without launching any real services.
+#
+# Panes are assigned in the grid's in-order (column-major) sequence:
+#   pane 0 -> top-left      pane 2 -> top-right
+#   pane 1 -> bottom-left   pane 3 -> bottom-right
+#
+# A correct build shows each label in its named position, evenly sized.
+windows:
+  - name: grid-test
+    root: ~
+    layout: tiled
+    panes:
+      - commands:
+          - clear; echo "PANE 0 — TOP-LEFT"
+      - commands:
+          - clear; echo "PANE 1 — BOTTOM-LEFT"
+      - commands:
+          - clear; echo "PANE 2 — TOP-RIGHT"
+      - commands:
+          - clear; echo "PANE 3 — BOTTOM-RIGHT"

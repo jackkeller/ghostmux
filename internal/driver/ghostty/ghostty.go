@@ -146,8 +146,17 @@ func (d *Driver) CreateWindow(window config.WindowConfig) error {
 // buildTiledGrid arranges n panes into a balanced grid. Ghostty's new_split only
 // splits the currently focused pane (and moves focus to the new one), so unlike
 // tmux there is no global re-layout — we build columns first, then split each
-// column into rows, navigating focus spatially between steps. Stacked right-splits
-// start unequal, so we equalize sizes at the end.
+// column into rows, navigating focus between steps.
+//
+// We navigate with goto_split:previous/next (Cmd+[ / Cmd+]) rather than the
+// directional Cmd+Alt+Arrow bindings: the directional keystrokes proved
+// unreliable via System Events (they silently no-op, collapsing the grid into a
+// single column plus a stack of right-hand splits). previous/next walk the split
+// tree's in-order leaf sequence, which is deterministic here: cascading
+// right-splits build a right-leaning tree, so the leaves are ordered column by
+// column. That means after splitting one column into its rows (focus lands on the
+// column's bottom row), a single goto_split:next lands on the top of the next
+// column. Stacked splits start unequal, so we equalize sizes at the end.
 func (d *Driver) buildTiledGrid(n int) error {
 	if n <= 1 {
 		return nil
@@ -166,7 +175,8 @@ func (d *Driver) buildTiledGrid(n int) error {
 		fmt.Printf("Tiled grid: %d panes → %d columns %v rows\n", n, cols, rowsFor)
 	}
 
-	// 1. Create the columns across the top (new_split:right).
+	// 1. Create the columns left to right (new_split:right). Each split halves the
+	// focused (rightmost) pane, leaving focus on the new rightmost column.
 	for c := 1; c < cols; c++ {
 		if err := d.as.splitHorizontal(); err != nil {
 			return fmt.Errorf("creating column %d: %w", c, err)
@@ -174,15 +184,18 @@ func (d *Driver) buildTiledGrid(n int) error {
 		time.Sleep(400 * time.Millisecond)
 	}
 
-	// Focus is on the rightmost column; walk back to the leftmost.
+	// Focus is on the rightmost column; walk back to the leftmost via in-order
+	// traversal (goto_split:previous).
 	for c := 1; c < cols; c++ {
-		if err := d.as.gotoSplitLeft(); err != nil {
+		if err := d.as.gotoPreviousSplit(); err != nil {
 			return err
 		}
 		time.Sleep(150 * time.Millisecond)
 	}
 
-	// 2. Split each column into rows (new_split:down), then step right.
+	// 2. Split each column into rows (new_split:down). After a column's last row
+	// split, focus sits on that column's bottom row, so goto_split:next advances to
+	// the top of the next column.
 	for c := 0; c < cols; c++ {
 		for r := 1; r < rowsFor[c]; r++ {
 			if err := d.as.splitVertical(); err != nil {
@@ -191,7 +204,7 @@ func (d *Driver) buildTiledGrid(n int) error {
 			time.Sleep(400 * time.Millisecond)
 		}
 		if c < cols-1 {
-			if err := d.as.gotoSplitRight(); err != nil {
+			if err := d.as.gotoNextSplit(); err != nil {
 				return err
 			}
 			time.Sleep(150 * time.Millisecond)
