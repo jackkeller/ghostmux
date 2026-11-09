@@ -1,5 +1,21 @@
 package layout
 
+import "math"
+
+// TiledGrid returns the row count of each column for a balanced grid of n panes.
+// Panes are numbered column by column, top to bottom.
+func TiledGrid(n int) []int {
+	cols := int(math.Ceil(math.Sqrt(float64(n))))
+	rowsFor := make([]int, cols)
+	for c := 0; c < cols; c++ {
+		rowsFor[c] = n / cols
+		if c < n%cols {
+			rowsFor[c]++
+		}
+	}
+	return rowsFor
+}
+
 type Strategy interface {
 	NextSplit(index int) string
 }

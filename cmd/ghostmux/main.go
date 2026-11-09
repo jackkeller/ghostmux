@@ -6,10 +6,17 @@ import (
 	"os"
 	"path/filepath"
 	"runtime/debug"
+	"strings"
 
 	"github.com/jackkeller/ghostmux/internal/config"
 	"github.com/jackkeller/ghostmux/internal/driver/ghostty"
+	"github.com/jackkeller/ghostmux/internal/driver/rex"
 )
+
+type driver interface {
+	Launch() error
+	CreateWindow(window config.WindowConfig) error
+}
 
 var version = "dev"
 
@@ -29,6 +36,7 @@ func main() {
 		showVersion = flag.Bool("version", false, "Show version")
 		debug       = flag.Bool("debug", false, "Enable debug logging")
 		dryRun      = flag.Bool("dry-run", false, "Validate config without launching")
+		terminal    = flag.String("terminal", "auto", "Terminal to drive: auto, ghostty, or rex")
 	)
 	flag.Parse()
 
@@ -72,14 +80,27 @@ func main() {
 	}
 
 	// Create driver
-	drv := ghostty.New(*debug)
+	term := resolveTerminal(*terminal)
+	var drv driver
+	var termName string
+	switch term {
+	case "rex":
+		drv = rex.New(sessionLabel(cfgPath), *debug)
+		termName = "Rex"
+	case "ghostty":
+		drv = ghostty.New(*debug)
+		termName = "Ghostty"
+	default:
+		fmt.Fprintf(os.Stderr, "Error: unknown terminal '%s' (use auto, ghostty, or rex)\n", *terminal)
+		os.Exit(1)
+	}
 
-	// Launch Ghostty
+	// Launch terminal
 	if *debug {
-		fmt.Println("Launching Ghostty...")
+		fmt.Printf("Launching %s...\n", termName)
 	}
 	if err := drv.Launch(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error launching Ghostty: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error launching %s: %v\n", termName, err)
 		os.Exit(1)
 	}
 
@@ -97,6 +118,29 @@ func main() {
 	if *debug {
 		fmt.Println("✨ Done!")
 	}
+}
+
+// resolveTerminal picks Rex when run from inside Rex, and Ghostty otherwise.
+func resolveTerminal(flagValue string) string {
+	if flagValue != "auto" {
+		return strings.ToLower(flagValue)
+	}
+	if os.Getenv("REX_SESSION") != "" && rex.Available() {
+		return "rex"
+	}
+	return "ghostty"
+}
+
+// sessionLabel names the Rex session after the config, or after the current
+// directory for a project-local .ghostmux.yml.
+func sessionLabel(cfgPath string) string {
+	name := strings.TrimSuffix(filepath.Base(cfgPath), filepath.Ext(cfgPath))
+	if name == ".ghostmux" {
+		if wd, err := os.Getwd(); err == nil {
+			return filepath.Base(wd)
+		}
+	}
+	return name
 }
 
 func determineConfigPath(configPath, configName, configsDir string) string {
