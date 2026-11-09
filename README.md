@@ -1,6 +1,6 @@
 # ghostmux
 
-iTerm2's [itermocil](https://github.com/TomAnthony/itermocil) for [Ghostty](https://ghostty.org) and Rex - Launch complex terminal layouts with one command.
+iTerm2's [itermocil](https://github.com/TomAnthony/itermocil) for [Ghostty](https://ghostty.org) and [Rex](https://www.superlogical.com) - Launch complex terminal layouts with one command.
 
 > **macOS only** — ghostmux uses AppleScript to control Ghostty and the `rex` CLI to control Rex. It is not compatible with Linux or Windows.
 
@@ -120,7 +120,7 @@ See `examples/` directory for full sample configs.
 
 - [Go](https://go.dev) 1.21+
 - macOS (uses AppleScript)
-- [Ghostty](https://ghostty.org) or Rex (Beta or later)
+- [Ghostty](https://ghostty.org) or [Rex](https://www.superlogical.com) (Beta or later)
 
 ## License
 
