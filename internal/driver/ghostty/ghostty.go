@@ -2,7 +2,6 @@ package ghostty
 
 import (
 	"fmt"
-	"math"
 	"os/exec"
 	"time"
 
@@ -162,14 +161,8 @@ func (d *Driver) buildTiledGrid(n int) error {
 		return nil
 	}
 
-	cols := int(math.Ceil(math.Sqrt(float64(n))))
-	rowsFor := make([]int, cols)
-	for c := 0; c < cols; c++ {
-		rowsFor[c] = n / cols
-		if c < n%cols {
-			rowsFor[c]++
-		}
-	}
+	rowsFor := layout.TiledGrid(n)
+	cols := len(rowsFor)
 
 	if d.debug {
 		fmt.Printf("Tiled grid: %d panes → %d columns %v rows\n", n, cols, rowsFor)
